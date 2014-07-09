@@ -18,7 +18,7 @@ Framework for competition code
 3. Implement Strategy_Interface in new XXX_Strategy class
 4. Code stuff in new class
 
-<TODO>
+# @TODO
 * Abstract interaction with momvement
 * Tons with Leader and leader choices
 * HQ communications
