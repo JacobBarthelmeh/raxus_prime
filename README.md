@@ -17,3 +17,9 @@ Framework for competition code
 2. Add class name to Strategy_List and Strategy_Enum
 3. Implement Strategy_Interface in new XXX_Strategy class
 4. Code stuff in new class
+
+<TODO>
+* Abstract interaction with momvement
+* Tons with Leader and leader choices
+* HQ communications
+* Fleshing out drone class
