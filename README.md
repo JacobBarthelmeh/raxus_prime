@@ -18,6 +18,13 @@ Framework for competition code
 3. Implement Strategy_Interface in new XXX_Strategy class
 4. Code stuff in new class
 
+
+## Misc
+
+Status.java is to contain information about the robots surroundings ie near enemies and allies.
+
+Comm.java is used for general communications and then extended for specialized use.
+
 # @TODO
 * Abstract interaction with momvement
 * Tons with Leader and leader choices
