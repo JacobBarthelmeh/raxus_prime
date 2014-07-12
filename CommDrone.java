@@ -4,9 +4,10 @@ public class CommDrone extends Comm{
 	
 	private Drone drone;
 	
-	public CommDrone(Drone in)
+	public int setDrone(Drone in)
 	{
 		this.drone = in;
+		return 0;
 	}
 	
 	/**

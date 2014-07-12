@@ -3,9 +3,10 @@ package raxus_prime;
 public class CommLeader extends Comm{
 private Leader leader;
 	
-	public CommLeader(Leader in)
+	public int setLeader(Leader in)
 	{
 		this.leader = in;
+		return 0;
 	}
 	
 	/**

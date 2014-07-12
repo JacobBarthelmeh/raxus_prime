@@ -40,5 +40,42 @@ public class Status {
 		//@TODO sense nearby allies
 	}
 	
+	
+	/**
+	 * Get the location of the nearest enemy
+	 * @return array  [x , y] of nearest enemy
+	 */
+	public int[] getClosestEnemy()
+	{
+		int[] ret = {nearEnemyX, nearEnemyY};
+		return ret;
+	}
+	
+	/**
+	 * Get the location of the nearest alley
+	 * @return array  [x , y] of nearest alley
+	 */
+	public int[] getClosestAlley()
+	{
+		int[] ret = {nearAlleyX, nearAlleyY};
+		return ret;
+	}
+	
+	/**
+	 * Get the number of enemies seen
+	 * @return number enemy
+	 */
+	public int getNumberEnemies()
+	{
+		return enemiesX.length;
+	}
 
+	/**
+	 * Get the number of allies seen
+	 * @return number allies
+	 */
+	public int getNumberAllies()
+	{
+		return alliesX.length;
+	}
 }

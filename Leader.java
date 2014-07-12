@@ -4,24 +4,35 @@ import battlecode.common.*;
 public class Leader {
 	
 	/* current orders from hq */
-	Behavior_Interface b;
+	Strategy_Interface s;
+	
 	int x,y;
 	
-	/* communication with other leaders */
+	/* @TODO potential communication with other leaders */
 	
-	/* orders to be given to drones */
+	
+	/* @TODO orders to be given to drones */
 	
 	
 	/* current status */
 	Status status;
+	int mapChannel;
+	CommLeader com;
 	
 	
 	public Leader(RobotController rc, int c, int m)//@TODO add rc to parameter
 	{
 		int channel = c;
 		int mapChannel = m;
-		CommLeader com = new CommLeader(this);
-		status = new Status();
+		
+		/* add a comm object to object pool */
+		com = Object_Pool.getCommLeader();
+		com.setLeader(this);
+		com.setChannels(channel, mapChannel);
+		
+		/* add a status object to object pool */
+		status = Object_Pool.getStatus();
+		
 		
 		while(true) {
 			com.getMsg(); //sets target location and behavior
@@ -42,9 +53,9 @@ public class Leader {
 	 * @param in
 	 * @return
 	 */
-	public int setBehavior(Behavior_Enum in)
+	public int setBehavior(Strategy_Enum in)
 	{
-		b = in.getType();
+		s = in.getType();
 		return 0;
 	}
 	

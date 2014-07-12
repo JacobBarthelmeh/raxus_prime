@@ -18,6 +18,9 @@ Framework for competition code
 3. Implement Strategy_Interface in new XXX_Strategy class
 4. Code stuff in new class
 
+### API Calls 
+
+To account for possible changes in basic api calls such as rc.move() they can all be found in Api.java and updated as needed.
 
 ## Misc
 

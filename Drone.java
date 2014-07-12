@@ -22,10 +22,15 @@ public class Drone {
 	{
 		int channel = c;
 		mapChannel = m;
-		com = new CommDrone(this);
-		status = new Status();
 		
+		/* add a comm object to object pool */
+		com = Object_Pool.getCommDrone();
+		com.setDrone(this);
 		com.setChannels(channel, mapChannel);
+		
+		/* add a status object to object pool */
+		status = Object_Pool.getStatus();
+		
 		while(true) {
 			//sets target location and behavior
 			com.getMsg(); 
