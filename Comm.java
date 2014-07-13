@@ -1,8 +1,17 @@
 package raxus_prime;
 
+/**
+ * 4bits mac , 10bits y, 10bits x, 8bits action 
+ * info[0] = action
+ * info[1] = x cord
+ * info[2] = y cord
+ * 
+ * @author TheLogicalWeapon
+ *
+ */
 abstract class Comm {
 	
-	private boolean enc = false;
+	private boolean enc = true;
 	
 	int[] chanIn;
 	int[] chanOut;
@@ -64,9 +73,9 @@ abstract class Comm {
 		
 		//if chan is null than send to all channels
 		if (chan == null) {
-			for (int channel : chanOut) {
+			//for (int channel : chanOut) {
 				//@TODO send out to each channel
-			}
+			//}
 		}
 		else {
 			for (int channel : chan) {
@@ -74,7 +83,7 @@ abstract class Comm {
 			}
 		}
 		
-		return 0;
+		return out;
 	}
 	
 	/**
@@ -87,7 +96,7 @@ abstract class Comm {
 	 */
 	public int[][] recieve(int channel)
 	{
-		int[][] info = new int[chanIn.length][4];
+		int[][] info = new int[1][4];//chanIn.length][4];
 		
 		if (channel == -1) {
 			int read = 10; //@TODO read channel channel 
@@ -116,7 +125,6 @@ abstract class Comm {
 		info[0] = read & 0x000000ff;		 /*action*/
 		info[1] = (read & 0x0003ff00) >>  8; /*x cord*/
 		info[2] = (read & 0x0ffc0000) >> 18; /*y cord*/
-		info[3] = (read & 0xf0000000) >> 28; /* mac  */
 		
 		return info; 
 	}
@@ -128,9 +136,43 @@ abstract class Comm {
 	 */
 	public int encrypt(int m)
 	{
-		int info = 0;
+		return mac(process(m));
+
+	}
+	
+	/**
+	 * childs play encryption but for 4 bytes and short time don't need more
+	 * @param m
+	 * @return
+	 */
+	private int process(int m)
+	{
+
+		int[] x = {
+                0x05468654, 0x0c6f6769, 0x063616c5,
+                0x07656170, 0x06f6e000
+        };
 		
-		return info;
+        for (int i = 0; i < x.length; i++) {
+		    m ^= x[i];
+        }
+
+        return m;
+	}
+	
+	
+	/**
+	 * Hash a mac for the message and append to front
+	 * @param m
+	 * @return
+	 */
+	private int mac(int m)
+	{
+		int mac = 0;
+		m &= 0x0fffffff; //clear way for mac
+		mac = m * 113;
+		mac %= 16; //4 bits to work with
+		return (mac << 28) | m;	
 	}
 	
 	/**
@@ -141,9 +183,14 @@ abstract class Comm {
 	public int decrypt(int c)
 	{
 		int info = Integer.MIN_VALUE;
-		
+
 		//if tampered with return min int value
-		
-		return info;
+		if (mac(c) != c) {
+		    System.out.println("Mac did not match!!!");
+            return info;
+
+        }
+
+		return process(c&= 0x0fffffff);
 	}
 }
