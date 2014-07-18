@@ -19,7 +19,8 @@ public class CommDrone extends Comm{
 	public int getMsg()
 	{	
 		int[][] orders = recieve(-1);
-		drone.setLocation(orders[0][1], orders[0][2]);
+		drone.setOptionalFlag(orders[0][1]);
+		drone.setLocation(orders[0][2], orders[0][3]);
 		drone.setBehavior(Behavior_List.getBehavior(orders[0][0]));
 		return 0;
 	}
@@ -30,7 +31,17 @@ public class CommDrone extends Comm{
 	 */
 	public int sendMsg(int a, int x, int y)
 	{
-		send(a, x, y, chanOut);
+		send(a, false, x, y, chanOut);
+		return 0;
+	}
+	
+	/**
+	 * Drone send a message to all recipeants in chanOut
+	 * @return
+	 */
+	public int sendMsg(int a, boolean optionalFlag, int x, int y)
+	{
+		send(a, optionalFlag, x, y, chanOut);
 		return 0;
 	}
 	

@@ -17,6 +17,9 @@ public class Drone {
 	int mapChannel;
 	CommDrone com;
 	
+	/* keep track of leader alive */
+	int alive = 0;
+	int count = 0;
 	
 	public Drone(RobotController rc, int c, int m)
 	{
@@ -73,6 +76,22 @@ public class Drone {
 		return 0;
 	}
 	
+	/**
+	 * Keep track if the leader is alive by using the optional flag
+	 * @param f flag value
+	 * @return
+	 */
+	public int setOptionalFlag(int f)
+	{
+		if (f == alive) {
+			count++;
+		} 
+		else {
+			count = 0;
+			alive = f;
+		}
+		return 0;
+	}
 	
 	/**
 	 * Called by CommDrone to set target location

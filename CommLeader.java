@@ -2,7 +2,9 @@ package raxus_prime;
 
 public class CommLeader extends Comm{
 private Leader leader;
-	
+
+	boolean alive = false;
+
 	public int setLeader(Leader in)
 	{
 		this.leader = in;
@@ -21,10 +23,32 @@ private Leader leader;
 		return 0;
 	}
 	
-
+	
+	/**
+	 * Easy sendMsg that constantly flips optional flag so drone know leader is alive
+	 * @param a
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public int sendMsg(int a, int x, int y)
 	{
-		send(a, x, y, chanOut);
+		send(a, alive, x, y, chanOut);
+		alive = !alive;
+		return 0;
+	}
+	
+	/**
+	 * Choose what optional flag to send
+	 * @param a
+	 * @param optionalFlag
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public int sendMsg(int a, boolean optionalFlag, int x, int y)
+	{
+		send(a, optionalFlag, x, y, chanOut);
 		return 0;
 	}
 	

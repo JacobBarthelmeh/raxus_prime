@@ -13,6 +13,8 @@ abstract class Comm {
 	
 	private boolean enc = true;
 	
+	Api api = Object_Pool.getApi();
+	
 	int[] chanIn;
 	int[] chanOut;
 
@@ -54,10 +56,10 @@ abstract class Comm {
 	 * @param chan specific channels, null for send all stored out channels
 	 * @return
 	 */
-	public int send(int a, int x, int y,  int[] chan)
+	public int send(int a, boolean optionalFlag, int x, int y,  int[] chan)
 	{
-		if (a > 255) {
-			System.out.printf("Action can not be larger than 8 bits\n");
+		if (a > 128) {
+			System.out.printf("Action can not be larger than 7 bits\n");
 			return 1;
 		}
 		
@@ -67,19 +69,21 @@ abstract class Comm {
 		}
 		
 		int out = (a | (x << 8) | (y << 18));
+		if (optionalFlag) { out |= 0x80; };
+			
 		if (enc) {
 			out = encrypt(out);
 		}
 		
 		//if chan is null than send to all channels
 		if (chan == null) {
-			//for (int channel : chanOut) {
-				//@TODO send out to each channel
-			//}
+			for (int channel : chanOut) {
+				api.sendMsg(channel, out);
+			}
 		}
 		else {
 			for (int channel : chan) {
-				//@TODO send out to each channel
+				api.sendMsg(channel, out);
 			}
 		}
 		
@@ -121,10 +125,11 @@ abstract class Comm {
 			return null;
 		}
 		
-		int[] info = new int[4];
-		info[0] = read & 0x000000ff;		 /*action*/
-		info[1] = (read & 0x0003ff00) >>  8; /*x cord*/
-		info[2] = (read & 0x0ffc0000) >> 18; /*y cord*/
+		int[] info = new int[5];
+		info[0] = read & 0x0000005f;		 /*action*/
+		info[1] = read & 0x00000080;		 /*optFlag*/
+		info[2] = (read & 0x0003ff00) >>  8; /*x cord*/
+		info[3] = (read & 0x0ffc0000) >> 18; /*y cord*/
 		
 		return info; 
 	}
