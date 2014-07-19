@@ -66,7 +66,7 @@ public class Status {
 	{
 		int[][] xy = api.getAllieLocations();
 		
-		//if none sensed nearby then nearest might be enemy hq
+		//if none sensed nearby then nearest might be hq
 		if (xy == null) {
 			alliesX = null;
 			alliesY = null;	
