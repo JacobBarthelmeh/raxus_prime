@@ -1,5 +1,4 @@
 package raxus_prime;
-import battlecode.common.*;
 
 /**
  * Drone to handle grunt work does not use higher level strategies
@@ -21,7 +20,7 @@ public class Drone {
 	int alive = 0;
 	int count = 0;
 	
-	public Drone(RobotController rc, int c, int m)
+	public Drone(int c, int m)
 	{
 		int channel = c;
 		mapChannel = m;
@@ -39,14 +38,19 @@ public class Drone {
 			com.getMsg(); 
 			
 			//sense information around drone
-			status.update(rc);
+			status.update();
+			
+			//if it's been a while since hearing from leader, then form new group
+			if (count > 7) {
+				b = Behavior_Enum.ChangeLeader.getType();
+			}
 			
 			//pass target location and status to behavior type and perform actions
-			b.setStatus(status);
+			b.setStatus();
 			b.setTarget(x, y);
-			b.action(rc);
+			b.action();
 			b.secondaryAction(this); //secondary action can perform update for a new leader
-			b.move(rc);
+			b.move();
 			
 			//@TODO sense if new map information / waypoint should be sent
 			//com.sendMsg(0,x,y);

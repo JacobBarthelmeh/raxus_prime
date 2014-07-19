@@ -1,7 +1,8 @@
 package raxus_prime;
-import battlecode.common.*;
 
 public class Status {
+	
+	Api api = Object_Pool.getApi();
 	
 	double health;
 	
@@ -9,18 +10,32 @@ public class Status {
 	int[] enemiesY;
 	int nearEnemyX;
 	int nearEnemyY;
+	Integer EnemyHQX;
+	Integer EnemyHQY;
 	
 	int[] alliesX;
 	int[] alliesY;
 	int nearAlleyX;
 	int nearAlleyY;
+	Integer AllieHQX;
+	Integer AllieHQY;
 	
 	
-	public int update(RobotController rc)
+	public int update()
 	{
-		setHealth(rc.getHealth());
-		setEnemies(rc);
-		setAllies(rc);
+		//get the hq locations for first time then not update it
+		if(EnemyHQX == null) {
+			int[] xy = api.getEnemyHQLocation();
+			EnemyHQX = xy[0];
+			EnemyHQY = xy[1];
+			xy = api.getHQLocation();
+			AllieHQX = xy[0];
+			AllieHQY = xy[1];
+		}
+		
+		setHealth(api.getHealth());
+		setEnemies();
+		setAllies();
 		return 0;
 	}
 	
@@ -29,15 +44,40 @@ public class Status {
 		health = h;
 	}
 	
-	private void setEnemies(RobotController rc)
+	private void setEnemies()
 	{
-		//TODO sense nearby enemies (and find closest while sensing)
-		//Robot e[] = rc.senseNearbyGameObjects(arg0, arg1, arg2, rc.getRobot().getTeam().opponent())
+		int[][] xy = api.getEnemieLocations();
+		
+		//if none sensed nearby then nearest might be enemy hq
+		if (xy == null) {
+			enemiesX = null;
+			enemiesY = null;
+			nearEnemyX = EnemyHQX;
+			nearEnemyY = EnemyHQY;
+			return;
+		}
+		
+		//@TODO potential scope issue ....
+		enemiesX = xy[0];
+		enemiesY = xy[1];
 	}
 	
-	private void setAllies(RobotController rc)
+	private void setAllies()
 	{
-		//@TODO sense nearby allies
+		int[][] xy = api.getAllieLocations();
+		
+		//if none sensed nearby then nearest might be enemy hq
+		if (xy == null) {
+			alliesX = null;
+			alliesY = null;	
+			nearAlleyX = AllieHQX;
+			nearAlleyY = AllieHQY;
+			return;
+		}
+		
+		//@TODO potential scope issue ....
+		alliesX = xy[0];
+		alliesY = xy[1];
 	}
 	
 	
@@ -67,7 +107,12 @@ public class Status {
 	 */
 	public int getNumberEnemies()
 	{
-		return enemiesX.length;
+		if (enemiesX == null) {
+			return 0;
+		}
+		else {
+			return enemiesX.length;
+		}
 	}
 
 	/**
@@ -76,6 +121,11 @@ public class Status {
 	 */
 	public int getNumberAllies()
 	{
-		return alliesX.length;
+		if (alliesX == null) {
+			return 0;
+		}
+		else {
+			return alliesX.length;
+		}
 	}
 }

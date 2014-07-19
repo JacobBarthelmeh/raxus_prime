@@ -15,6 +15,8 @@ public class Behavior_List {
 			return Behavior_Enum.Evade;
 		case 4 :
 			return Behavior_Enum.Seppuku;
+		case 5 :
+			return Behavior_Enum.ChangeLeader;
 		
 			//add any more behaviors here
 			

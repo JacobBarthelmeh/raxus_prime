@@ -38,7 +38,7 @@ public class Leader {
 			com.getMsg(); //sets target location and behavior
 			
 			//sense information around drone
-			status.update(rc);
+			status.update();
 			
 			
 			//@TODO sense if new map information / waypoint should be sent

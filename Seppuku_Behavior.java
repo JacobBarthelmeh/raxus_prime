@@ -1,11 +1,9 @@
 package raxus_prime;
 
-import battlecode.common.RobotController;
-
 public class Seppuku_Behavior implements Behavior_Interface{
 
 	@Override
-	public int setStatus(Status in) {
+	public int setStatus() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -17,7 +15,7 @@ public class Seppuku_Behavior implements Behavior_Interface{
 	}
 
 	@Override
-	public int action(RobotController rc) {
+	public int action() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -29,7 +27,7 @@ public class Seppuku_Behavior implements Behavior_Interface{
 	}
 
 	@Override
-	public int move(RobotController rc) {
+	public int move() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

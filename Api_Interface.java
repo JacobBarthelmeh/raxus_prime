@@ -45,6 +45,23 @@ public interface Api_Interface {
 	 
 	 int sendMsg(int channel, int out);
 	 
+	 double getHealth();
+	 
+	 /**
+	  * 
+	  * @return an array with x in int[0][i] and y in int[1][i] 
+	  */
+	 int[][] getEnemieLocations();
+
+	 /**
+	  * 
+	  * @return an array with x in int[0][i] and y in int[1][i] 
+	  */
+	 int[][] getAllieLocations();
+	 
+	 int[] getEnemyHQLocation();
+	 
+	 int[] getHQLocation();
 	 
 	
 }

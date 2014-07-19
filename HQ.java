@@ -1,7 +1,5 @@
 package raxus_prime;
 
-import battlecode.common.*;
-
 /**
  * @Author TheLogicalWeapon
  */
@@ -10,24 +8,20 @@ public class HQ {
 	Status status = new Status();
 	Api api = Object_Pool.getApi();
 
-	public HQ(RobotController rc) {
+	public HQ() {
 		while (true) {
 			try {
 				// get status of HQ
-				status.update(rc);
-				while (rc.getActionDelay() > 0) {
-					rc.yield();
-				}
+				status.update();
 
 				// attack enemies if they are in range
 				if (status.getNumberEnemies() > 0) {
 					int[] nearest = status.getClosestEnemy();
-					api.attack(rc, nearest[0], nearest[1]);
+					api.attack(nearest[0], nearest[1]);
 				}
 
 				// spawn new robots
-				api.spawn(rc);
-				rc.yield();
+				api.spawn();
 
 			} catch (Exception e) {
 				System.out

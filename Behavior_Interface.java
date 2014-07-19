@@ -1,11 +1,10 @@
 package raxus_prime;
-import battlecode.common.RobotController;
 
 public interface Behavior_Interface {
-	int setStatus(Status in);
+	int setStatus();
 	int setTarget(int x, int y);
-	int action(RobotController rc);
+	int action();
 	int secondaryAction(Drone in);
-	int move(RobotController rc);
+	int move();
 	
 }
