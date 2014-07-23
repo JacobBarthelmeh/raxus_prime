@@ -41,8 +41,8 @@ abstract class Comm {
 	 * @return
 	 */
 	public int setChannels(int in, int out) {
-		chanIn = new int[0];
-		chanOut = new int[0];
+		chanIn = new int[1];
+		chanOut = new int[1];
 		chanIn[0] = in;
 		chanOut[0] = out;
 		return 0;
@@ -76,7 +76,6 @@ abstract class Comm {
 		if (optionalFlag) {
 			out |= 0x80;
 		}
-		;
 
 		if (enc) {
 			out = encrypt(out);
@@ -136,7 +135,7 @@ abstract class Comm {
 			if (read == Integer.MIN_VALUE)
 				return null;
 		}
-
+		
 		int[] info = new int[4];
 		info[0] = read & 0x0000005f; /* action */
 		info[1] = (read & 0x00000080) >> 7; /* optFlag */
@@ -184,7 +183,7 @@ abstract class Comm {
 		int mac = 0;
 		m &= 0x0fffffff; // clear way for mac
 		mac = m * 113;
-		mac %= 16; // 4 bits to work with
+		mac %= 16; // 4 bits to work with 
 		return (mac << 28) | m;
 	}
 

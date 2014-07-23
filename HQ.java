@@ -6,6 +6,7 @@ package raxus_prime;
 public class HQ {
 
 	Status status = new Status();
+	Comm com = Object_Pool.getCommHq();
 	Api api = Object_Pool.getApi();
 
 	public HQ() {
@@ -13,6 +14,9 @@ public class HQ {
 			try {
 				// get status of HQ
 				status.update();
+				
+				com.setChannels(0, 66);
+				com.send(1, true, 0, 0, null);
 
 				// attack enemies if they are in range
 				if (status.getNumberEnemies() > 0) {
