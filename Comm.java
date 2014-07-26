@@ -67,10 +67,12 @@ abstract class Comm {
 			return 1;
 		}
 
-		if (x > (2 ^ 10) || y > (2 ^ 10)) {
+		if (x > (Math.pow(2.0, 10.0)) || y > (Math.pow(2.0, 10.0))) {
 			System.out.printf("Cordinants outside capablility\n");
 			return 1;
 		}
+
+		//System.out.printf("Orders sent : Action %d X : %d Y : %d  \n", a, x, y);
 
 		int out = (a | (x << 8) | (y << 18));
 		if (optionalFlag) {
@@ -116,8 +118,12 @@ abstract class Comm {
 			int i = 0;
 			info = new int[chanIn.length][4];
 			for (int chan : chanIn) {
+				//System.out.println("Read from channel " + chan);
 				info[i++] = recieve_helper(api.readMsg(chan));
 			}
+
+			//System.out.printf("Orders recieved : Action %d X : %d Y : %d  \n",
+			//		info[0][0], info[0][2], info[0][3]);
 			return info;
 		} else {
 			info = new int[1][4];
@@ -135,7 +141,7 @@ abstract class Comm {
 			if (read == Integer.MIN_VALUE)
 				return null;
 		}
-		
+
 		int[] info = new int[4];
 		info[0] = read & 0x0000005f; /* action */
 		info[1] = (read & 0x00000080) >> 7; /* optFlag */
@@ -183,7 +189,7 @@ abstract class Comm {
 		int mac = 0;
 		m &= 0x0fffffff; // clear way for mac
 		mac = m * 113;
-		mac %= 16; // 4 bits to work with 
+		mac %= 16; // 4 bits to work with
 		return (mac << 28) | m;
 	}
 

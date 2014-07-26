@@ -14,9 +14,11 @@ public class HQ {
 			try {
 				// get status of HQ
 				status.update();
-				
+
+				// test broadcast tell drones to attack enemy hq
 				com.setChannels(0, 66);
-				com.send(1, true, 0, 0, null);
+				int[] xy = api.getEnemyHQLocation();
+				com.send(1, true, xy[0], xy[1], null);
 
 				// attack enemies if they are in range
 				if (status.getNumberEnemies() > 0) {

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package raxus_prime;
-
 /**
  * A quick and dirty array-based heap implementation, designed for use as a
  * priority queue. 
@@ -54,9 +53,11 @@ public class IntDoubleHeap {
                 return;
             }
         }
+        
     }
 
     public int pop() {
+        //if (index < 0) throw new IndexOutOfBoundsException();
         int min_point = points[0];
         index--;
         if (index <= 0) return min_point;

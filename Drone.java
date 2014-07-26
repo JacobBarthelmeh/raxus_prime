@@ -48,7 +48,7 @@ public class Drone {
 				// if it's been a while since hearing from leader, then form new
 				// group
 				if (count > 7) {
-					b = Behavior_Enum.ChangeLeader.getType();
+					//b = Behavior_Enum.ChangeLeader.getType();
 				}
 
 				// pass target location and status to behavior type and perform

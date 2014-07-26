@@ -19,7 +19,16 @@ public class Api implements Api_Interface {
 
 	@Override
 	public int move(int x, int y) {
-		// TODO Auto-generated method stub
+		try {
+			MapLocation loc = new MapLocation(x, y);
+			Direction dir = rc.getLocation().directionTo(loc);
+			if (rc.canMove(dir)) {
+				rc.move(dir);
+
+			}
+		} catch (GameActionException e) {
+			System.out.println("Error in api move()");
+		}
 		return 0;
 	}
 
@@ -73,7 +82,7 @@ public class Api implements Api_Interface {
 	@Override
 	public int sendMsg(int channel, int out) {
 		try {
-			rc.broadcast( channel, out);
+			rc.broadcast(channel, out);
 		} catch (GameActionException e) {
 			System.out.println("Error while sending msg.");
 		}
@@ -139,6 +148,34 @@ public class Api implements Api_Interface {
 		MapLocation loc = rc.senseHQLocation();
 		int[] ret = { loc.x, loc.y };
 		return ret;
+	}
+
+	@Override
+	public int[] getCurrentLocation() {
+		int[] xy = { rc.getLocation().x, rc.getLocation().y };
+		return xy;
+	}
+
+	@Override
+	public Boolean getIsObstacle(int x, int y) {
+		MapLocation loc = location(x, y);
+		if (rc.canSenseSquare(loc)) {
+			return rc.senseTerrainTile(loc).isTraversableAtHeight(
+					RobotLevel.ON_GROUND);
+		} else {
+			// cannot sense square therfor unknown if traversable
+			return null;
+		}
+	}
+
+	@Override
+	public int getMapWidth() {
+		return rc.getMapWidth();
+	}
+
+	@Override
+	public int getMapHeight() {
+		return rc.getMapHeight();
 	}
 
 }

@@ -19,19 +19,48 @@ public class Point {
         this.y = y;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return (o instanceof Point && ((Point) o).x == x && ((Point) o).y == y);
-    }
 
     @Override
     public int hashCode() {
-        /* fails for negative numbers and numbers larger than 2^15 */
-        return (this.x << 16) & this.y;
+        int hash = 7;
+        hash = 59 * hash + this.x;
+        hash = 59 * hash + this.y;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Point other = (Point) obj;
+        if (this.x != other.x) {
+            return false;
+        }
+        if (this.y != other.y) {
+            return false;
+        }
+        return true;
     }
     
     @Override
     public String toString() {
         return "(" + x + "," + y + ")";
+    }
+
+    
+    public int convertToInt() {
+        int a = 0;
+        a |= x;
+        a <<= 16;
+        a |= y;
+        return a;
+    }
+    
+    public static int manhattan(Point p1, Point p2) {
+        return Math.abs(p2.y - p1.y) + Math.abs(p2.x - p1.x);
     }
 }

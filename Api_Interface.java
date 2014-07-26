@@ -63,5 +63,18 @@ public interface Api_Interface {
 	 
 	 int[] getHQLocation();
 	 
+	 int[] getCurrentLocation();
+	 
+	 /**
+	  * Can return null if the location is outside range of sensor.
+	  * @param x
+	  * @param y
+	  * @return
+	  */
+	 Boolean getIsObstacle(int x, int y);
+	 
+	 int getMapWidth();
+	 int getMapHeight();
+	 
 	
 }

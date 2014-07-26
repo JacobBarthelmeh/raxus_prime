@@ -1,13 +1,13 @@
 package raxus_prime;
 
-public class Attack_Behavior implements Behavior_Interface{
+public class Attack_Behavior implements Behavior_Interface {
 
-	Api api       = Object_Pool.getApi();
+	Api api = Object_Pool.getApi();
 	Status status = Object_Pool.getStatus();
-	
+	Movement_Bugging mooBug = Object_Pool.getMovement_Bugging();
+
 	int x, y;
-	
-	
+
 	@Override
 	public int setStatus() {
 		// TODO Auto-generated method stub
@@ -19,14 +19,20 @@ public class Attack_Behavior implements Behavior_Interface{
 	public int setTarget(int x, int y) {
 		this.x = x;
 		this.y = y;
-		
-		//or perform some logic dependent on current status and previouslly set flags
+
+		// or perform some logic dependent on current status and previouslly set
+		// flags
 		return 0;
 	}
 
 	@Override
 	public int action() {
-		api.attack(x, y);
+		try {
+			api.attack(x, y);
+		} catch (Exception e) {
+			System.out
+					.println("Error while trying to attack in attack behavior");
+		}
 		return 0;
 	}
 
@@ -39,7 +45,16 @@ public class Attack_Behavior implements Behavior_Interface{
 
 	@Override
 	public int move() {
-		api.move(x, y);
+		try {
+			System.out.printf("Target to (%d,%d)\n", x, y);
+			int[] xy = mooBug.bugToo(x, y);
+			if (xy == null)
+				System.out.println("Error xy null");
+			System.out.printf("Moving to (%d,%d)\n", xy[0], xy[1]);
+			api.move(xy[0], xy[1]);
+		} catch (Exception e) {
+			System.out.println("Error while attack behavior move");
+		}
 		return 0;
 	}
 
