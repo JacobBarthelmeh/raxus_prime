@@ -55,27 +55,20 @@ public class MBugger {
 	 * @return true if the inputted point is traversable, false otherwise.
 	 */
 	private boolean isTraversable(int x, int y) {
-		// TheLogicalWeapon
-		// use api to check if other robots in the way or map location is
-		// traversable
-		// sure wish I had direct access to pointers here
-		boolean traversable = true;
-		Boolean temp = null;
-		int[][] xy = api.getAllieLocations();
+		try {
+			// TheLogicalWeapon
+			// use api to check if other robots in the way or map location is
+			// traversable
+			// sure wish I had direct access to pointers here
+			boolean traversable = true;
+			Boolean temp = null;
+			int[][] xy = api.getAllieLocations();
 
-		if (xy != null) {
-			for (int i = 0; i < xy[0].length; i++) {
-				if (xy[0][i] == x) {
-					if (xy[1][i] == y) {
-						traversable = false;
-						break;
-					}
-				}
+			// check if off the map
+			if (x >= tb.map.length || y >= tb.map[0].length || x < 0 || y < 0) {
+				return false;
 			}
-		}
 
-		if (traversable) {
-			xy = api.getEnemieLocations();
 			if (xy != null) {
 				for (int i = 0; i < xy[0].length; i++) {
 					if (xy[0][i] == x) {
@@ -86,24 +79,41 @@ public class MBugger {
 					}
 				}
 			}
-		}
 
-		// if it is an obstacle add obstacle and update map
-		if (traversable && !isOOB(x, y)) {
-			temp = api.getIsObstacle(x, y);
-			if (temp != null && !temp) {
-				traversable = false;
-				// check if already been discovered and just not added
-				if (!tb.map[x][y]) {
-					// @TODO option to broadcast the obstacle
-
-				} else {
-					tb.map[x][y] = false;
+			if (traversable) {
+				xy = api.getEnemieLocations();
+				if (xy != null) {
+					for (int i = 0; i < xy[0].length; i++) {
+						if (xy[0][i] == x) {
+							if (xy[1][i] == y) {
+								traversable = false;
+								break;
+							}
+						}
+					}
 				}
 			}
-		}
 
-		return traversable && tb.map[x][y];
+			// if it is an obstacle add obstacle and update map
+			if (traversable && !isOOB(x, y)) {
+				temp = api.getIsObstacle(x, y);
+				if (temp != null && !temp) {
+					traversable = false;
+					// check if already been discovered and just not added
+					if (!tb.map[x][y]) {
+						// @TODO option to broadcast the obstacle
+
+					} else {
+						tb.map[x][y] = false;
+					}
+				}
+			}
+
+			return traversable && tb.map[x][y];
+		} catch (Exception e) {
+			System.out.println("Error in isTraversable()" + e);
+		}
+		return false;
 	}
 
 	private boolean isOOB(int x, int y) {

@@ -33,19 +33,18 @@ public class Movement_Bugging {
 	public int[] bugToo(int x, int y) {
 		try {
 			// set new location if it is different than current target
-			System.out.printf("Bugging to (%d,%d)", x, y);
-			System.out.printf("Demensions of map [%d][%d]\n", map.length,
-					map[0].length);
-			// if (target[0] != x && target[1] != y) {
-			int[] xy = api.getCurrentLocation();
-			this.me = new Point(xy[0], xy[1]);
-			System.out.println("Setting me" + this.me);
+			//System.out.printf("Bugging to (%d,%d)", x, y);
+			//System.out.printf("Demensions of map [%d][%d]\n", map.length,
+			//		map[0].length);
+			if (target[0] != x && target[1] != y || me == null) {
+				int[] xy = api.getCurrentLocation();
+				this.me = new Point(xy[0], xy[1]);
+				//System.out.println("Setting me" + this.me);
 
-			setGoal(new Point(x, y));
-			target[0] = x;
-			target[1] = y;
-			// }
-
+				setGoal(new Point(x, y));
+				target[0] = x;
+				target[1] = y;
+			}
 			return getNextStep();
 		} catch (Exception e) {
 			System.out.println("Error in bugToo()");
@@ -75,7 +74,6 @@ public class Movement_Bugging {
 				xy[0] = me.x;
 				xy[1] = me.y;
 			}
-			System.out.println("I MOVE TO: " + me);
 
 			return xy;
 		} catch (Exception e) {

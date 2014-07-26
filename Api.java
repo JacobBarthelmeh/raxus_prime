@@ -22,7 +22,7 @@ public class Api implements Api_Interface {
 		try {
 			MapLocation loc = new MapLocation(x, y);
 			Direction dir = rc.getLocation().directionTo(loc);
-			if (rc.canMove(dir)) {
+			if (rc.canMove(dir) && rc.isActive()) {
 				rc.move(dir);
 
 			}
@@ -36,7 +36,8 @@ public class Api implements Api_Interface {
 	public int attack(int x, int y) {
 		try {
 			MapLocation loc = location(x, y);
-			if (rc.canAttackSquare(loc))
+			if (rc.canAttackSquare(loc) && rc.canAttackSquare(loc)
+					&& rc.isActive())
 				rc.attackSquare(loc);
 		} catch (GameActionException e) {
 			System.out.println("Error when attacking.");
@@ -97,20 +98,23 @@ public class Api implements Api_Interface {
 	@Override
 	public int[][] getEnemieLocations() {
 		try {
-			int[][] xy;
+			int[][] xy = null;
 			Robot[] enm = rc.senseNearbyGameObjects(Robot.class, rc
-					.getLocation(), rc.getType().sensorRadiusSquared, rc
-					.getTeam().opponent());
-			xy = new int[2][enm.length];
-			for (int i = 0; i < enm.length; i++) {
-				MapLocation loc = rc.senseLocationOf(enm[i]);
-				xy[0][i] = loc.x;
-				xy[1][i] = loc.y;
+					.getLocation(),
+					(int) Math.sqrt(rc.getType().sensorRadiusSquared), rc
+							.getTeam().opponent());
+			if (enm != null) {
+				xy = new int[2][enm.length];
+				for (int i = 0; i < enm.length; i++) {
+					MapLocation loc = rc.senseLocationOf(enm[i]);
+					xy[0][i] = loc.x;
+					xy[1][i] = loc.y;
 
+				}
 			}
 			return xy;
 		} catch (GameActionException e) {
-			System.out.println("Error in getEnemieLocations");
+			System.out.println("Error in getEnemieLocations " + e);
 		}
 		return null;
 	}
@@ -118,16 +122,19 @@ public class Api implements Api_Interface {
 	@Override
 	public int[][] getAllieLocations() {
 		try {
-			int[][] xy;
+			int[][] xy = null;
 			Robot[] all = rc.senseNearbyGameObjects(Robot.class,
-					rc.getLocation(), rc.getType().sensorRadiusSquared,
+					rc.getLocation(),
+					(int) Math.sqrt(rc.getType().sensorRadiusSquared),
 					rc.getTeam());
-			xy = new int[2][all.length];
-			for (int i = 0; i < all.length; i++) {
-				MapLocation loc = rc.senseLocationOf(all[i]);
-				xy[0][i] = loc.x;
-				xy[1][i] = loc.y;
+			if (all != null) {
+				xy = new int[2][all.length];
+				for (int i = 0; i < all.length; i++) {
+					MapLocation loc = rc.senseLocationOf(all[i]);
+					xy[0][i] = loc.x;
+					xy[1][i] = loc.y;
 
+				}
 			}
 			return xy;
 		} catch (GameActionException e) {

@@ -46,11 +46,12 @@ public class Attack_Behavior implements Behavior_Interface {
 	@Override
 	public int move() {
 		try {
-			System.out.printf("Target to (%d,%d)\n", x, y);
 			int[] xy = mooBug.bugToo(x, y);
-			if (xy == null)
-				System.out.println("Error xy null");
-			System.out.printf("Moving to (%d,%d)\n", xy[0], xy[1]);
+			if (xy == null) {
+				//no where found to move
+				return 0;
+			}
+			//System.out.printf("Moving to (%d,%d)\n", xy[0], xy[1]);
 			api.move(xy[0], xy[1]);
 		} catch (Exception e) {
 			System.out.println("Error while attack behavior move");
