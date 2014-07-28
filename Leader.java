@@ -1,75 +1,79 @@
 package raxus_prime;
+
+import java.util.Arrays;
+
 import battlecode.common.*;
 
 public class Leader {
-	
+
 	/* current orders from hq */
 	Strategy_Interface s;
-	
-	int x,y;
-	
+
+	int x, y;
+
 	/* @TODO potential communication with other leaders */
-	
-	
+
 	/* @TODO orders to be given to drones */
-	
-	
+
 	/* current status */
 	Status status;
 	int mapChannel;
 	CommLeader com;
-	
-	
-	public Leader(RobotController rc, int c, int m)//@TODO add rc to parameter
-	{
+
+	@SuppressWarnings("unused")
+	public Leader(int c, int m) {
 		int channel = c;
 		int mapChannel = m;
-		
+
 		/* add a comm object to object pool */
 		com = Object_Pool.getCommLeader();
 		com.setLeader(this);
 		com.setChannels(channel, mapChannel);
-		
+
 		/* add a status object to object pool */
 		status = Object_Pool.getStatus();
-		
-		
-		while(true) {
-			com.getMsg(); //sets target location and behavior
-			
-			//sense information around drone
-			status.update();
-			
-			
-			//@TODO sense if new map information / waypoint should be sent
-			//com.sendMsg(0,x,y);
-			
+
+		Movement_Panther pant = Object_Pool.getMovement_Panther();
+		Movement_Bugging mb = Object_Pool.getMovement_Bugging();
+		Api api = Object_Pool.getApi();
+
+		// make sure map is not null
+		Object_Pool.getMap();
+
+		while (true) {
+			boolean[][] previous = new boolean[api.getMapWidth()][api
+					.getMapHeight()];
+			previous = Object_Pool.map.clone();
+
+			// try to path to enemy hg
+			int[] xy = api.getCurrentLocation();
+			int[] x2y2 = api.getEnemyHQLocation();
+			int[][] path = pant.getPathTo(xy[0], xy[1], x2y2[0], x2y2[1]);
+			if (path == null)
+				System.out.println("Path was null");
+			for (int i = 0; i < path.length; i++) {
+				int[] to;
+				int[] at;
+				do {
+					to = mb.bugToo(path[0][i], path[1][i]);
+					api.move(to[0], to[1]);
+					at = api.getCurrentLocation();
+				} while (to != null && !Arrays.equals(to, at));
+
+				if (to == null) {
+					// hit a wall update and try again
+					boolean[][] current = Object_Pool.map;
+					for (int j = 0; j < api.getMapWidth(); j++) {
+						for (int k = 0; k < api.getMapHeight(); k++) {
+							if (previous[j][k] != current[j][k]) {
+								pant.addObstacle(j, k);
+							}
+						}
+					}
+
+					break;
+				}
+			}
 		}
-	}
-	
-	
-	/**
-	 * Called by CommDrone to set current behavior
-	 * @param in
-	 * @return
-	 */
-	public int setBehavior(Strategy_Enum in)
-	{
-		s = in.getType();
-		return 0;
-	}
-	
-	
-	/**
-	 * Called by CommDrone to set target location
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public int setLocation(int x, int y)
-	{
-		this.x = x;
-		this.y = y;
-		return 0;
 	}
 }

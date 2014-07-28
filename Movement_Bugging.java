@@ -1,6 +1,7 @@
 package raxus_prime;
 
 /**
+ * Used to incorporate bugging from Alex's Panther into battlecode framework
  * Should be all that drones need for movements
  * 
  * @author Alex and TheLogicalWeapon
@@ -40,10 +41,13 @@ public class Movement_Bugging {
 				int[] xy = api.getCurrentLocation();
 				this.me = new Point(xy[0], xy[1]);
 				//System.out.println("Setting me" + this.me);
-
+				mb.reset();
 				setGoal(new Point(x, y));
 				target[0] = x;
 				target[1] = y;
+			}
+			if (mb.pathRatio() > 1.2) {
+				return null; //taking too long must have hit a wall
 			}
 			return getNextStep();
 		} catch (Exception e) {
@@ -82,7 +86,7 @@ public class Movement_Bugging {
 		return null;
 	}
 
-	public void setGoal(Point p) {
+	private void setGoal(Point p) {
 		mb.setStartAndFinish(me, p);
 	}
 

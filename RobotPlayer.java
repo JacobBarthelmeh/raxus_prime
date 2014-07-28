@@ -11,7 +11,7 @@ public class RobotPlayer {
 		api.setRc(rc);
 
 		int firstChannel = 66;
-		int mapchannel = 1305;
+		int mapchannel = 299;
 
 		while (true) {
 			if (rc.getType() == RobotType.HQ) {
@@ -23,7 +23,8 @@ public class RobotPlayer {
 			}
 			if (rc.getType() == RobotType.SOLDIER) {
 				try {
-					new Drone(firstChannel, mapchannel);
+					// new Drone(firstChannel, mapchannel);
+					new Leader(firstChannel, mapchannel);
 				} catch (Exception e) {
 					System.out.println("Soldier Exception \t" + e);
 				}

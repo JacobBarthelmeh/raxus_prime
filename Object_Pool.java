@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 /**
  * Used so that only creating one object then using it by refrence. Using static
- * in the assumption that will only be called by one rc. Otherwise ..... why have
- * communication and all that jazz.
+ * in the assumption that will only be called by one rc. Otherwise ..... why
+ * have communication and all that jazz.
  * 
  * @author TheLogicalWeapon
  * 
@@ -15,7 +15,15 @@ public class Object_Pool {
 	static Comm comm;
 	static Status status;
 	static Movement_Bugging mooBug;
-	static boolean map[][];
+	static Movement_Panther mooPant;
+	static boolean map[][]; // [width of map] [height of map]
+
+	static int obstacleChan = 300; // starting channel to read obstacles from
+	static int obstacleReport = 299; // channel to report obstacles
+
+	public static void setObstacleReport(int i) {
+		obstacleReport = i;
+	}
 
 	public static Api getApi() {
 		if (api == null)
@@ -65,7 +73,7 @@ public class Object_Pool {
 	public static void freeCommLeader() {
 		comm = null;
 	}
-	
+
 	public static CommHq getCommHq() {
 		try {
 			if (comm == null || comm.getClass().equals(CommHq.class))
@@ -81,6 +89,22 @@ public class Object_Pool {
 	 * Gets rid of the refference to comm
 	 */
 	public static void freeCommHq() {
+		comm = null;
+	}
+
+	public static Comm getComm() {
+		try {
+			return comm;
+		} catch (Exception e) {
+			System.out.println("getComm Exception");
+		}
+		return null;
+	}
+
+	/**
+	 * Gets rid of the refference to comm
+	 */
+	public static void freeComm() {
 		comm = null;
 	}
 
@@ -101,11 +125,11 @@ public class Object_Pool {
 	public static void freeStatus() {
 		status = null;
 	}
-	
+
 	public static boolean[][] getMap() {
 		if (map == null) {
 			map = new boolean[api.getMapWidth()][api.getMapHeight()];
-			for (boolean[] i: map)
+			for (boolean[] i : map)
 				Arrays.fill(i, true);
 		}
 		return map;
@@ -117,7 +141,7 @@ public class Object_Pool {
 	public static void freeMap() {
 		map = null;
 	}
-	
+
 	public static Movement_Bugging getMovement_Bugging() {
 		if (mooBug == null)
 			mooBug = new Movement_Bugging();
@@ -129,5 +153,18 @@ public class Object_Pool {
 	 */
 	public static void freeMovement_Bugging() {
 		mooBug = null;
+	}
+
+	public static Movement_Panther getMovement_Panther() {
+		if (mooPant == null)
+			mooPant = new Movement_Panther();
+		return mooPant;
+	}
+
+	/**
+	 * Gets rid of the refference to Movement_Panther
+	 */
+	public static void freeMovement_Panther() {
+		mooPant = null;
 	}
 }

@@ -24,7 +24,7 @@ public class MBugger {
 	// TheLogicalWeapon
 	// get Api and status from Object_Pool
 	private Api api = Object_Pool.getApi();
-	private Status status = Object_Pool.getStatus();
+	private Comm com = Object_Pool.getComm();
 
 	/**
 	 * Code in the following range needs to be modified for specific purposes
@@ -100,10 +100,9 @@ public class MBugger {
 				if (temp != null && !temp) {
 					traversable = false;
 					// check if already been discovered and just not added
-					if (!tb.map[x][y]) {
-						// @TODO option to broadcast the obstacle
-
-					} else {
+					if (tb.map[x][y]) {
+						int[] arr = { Object_Pool.obstacleReport };
+						com.send(0, false, x, y, arr);
 						tb.map[x][y] = false;
 					}
 				}
@@ -275,7 +274,11 @@ public class MBugger {
 	}
 
 	public double pathRatio() {
-		return ((double) moveCount) / Point.manhattan(start, finish);
+		if (moveCount == 0) {
+			return 0;
+		} else {
+			return ((double) moveCount) / Point.manhattan(start, finish);
+		}
 	}
 
 }

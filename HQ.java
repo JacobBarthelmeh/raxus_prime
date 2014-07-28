@@ -17,13 +17,13 @@ public class HQ {
 
 				// test broadcast tell drones to attack enemy hq
 				com.setChannels(0, 66);
-				int[] xy = api.getEnemyHQLocation();
+				int[] xy = api.getHQLocation();
 				com.send(1, true, xy[0], xy[1], null);
 
 				// attack enemies if they are in range
 				if (status.getNumberEnemies() > 0) {
 					int[] nearest = status.getClosestEnemy();
-					api.attack(nearest[0], nearest[1]);
+					api.attack(nearest[0], nearest[1], true);
 				}
 
 				// spawn new robots

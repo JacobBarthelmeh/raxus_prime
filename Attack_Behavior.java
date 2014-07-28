@@ -28,7 +28,7 @@ public class Attack_Behavior implements Behavior_Interface {
 	@Override
 	public int action() {
 		try {
-			api.attack(x, y);
+			api.attack(x, y, true);
 		} catch (Exception e) {
 			System.out
 					.println("Error while trying to attack in attack behavior");
@@ -48,10 +48,10 @@ public class Attack_Behavior implements Behavior_Interface {
 		try {
 			int[] xy = mooBug.bugToo(x, y);
 			if (xy == null) {
-				//no where found to move
+				// no where found to move
 				return 0;
 			}
-			//System.out.printf("Moving to (%d,%d)\n", xy[0], xy[1]);
+			// System.out.printf("Moving to (%d,%d)\n", xy[0], xy[1]);
 			api.move(xy[0], xy[1]);
 		} catch (Exception e) {
 			System.out.println("Error while attack behavior move");

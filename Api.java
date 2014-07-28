@@ -33,12 +33,20 @@ public class Api implements Api_Interface {
 	}
 
 	@Override
-	public int attack(int x, int y) {
+	public int attack(int x, int y, boolean catious) {
 		try {
 			MapLocation loc = location(x, y);
 			if (rc.canAttackSquare(loc) && rc.canAttackSquare(loc)
 					&& rc.isActive())
-				rc.attackSquare(loc);
+				if (catious) {
+					if (!(rc.senseObjectAtLocation(loc).getTeam() == rc
+							.getTeam())) {
+
+						rc.attackSquare(loc);
+					}
+				} else {
+					rc.attackSquare(loc);
+				}
 		} catch (GameActionException e) {
 			System.out.println("Error when attacking.");
 		}
